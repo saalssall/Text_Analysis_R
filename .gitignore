@@ -6,3 +6,4 @@
 renv/library/
 data/
 
+.DS_Store
