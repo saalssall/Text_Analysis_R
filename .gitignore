@@ -1,1 +1,8 @@
-Slides
+.Rhistory
+.RData
+.Rproj.user/
+.Rapp.history
+*.Rproj
+renv/library/
+data/
+
