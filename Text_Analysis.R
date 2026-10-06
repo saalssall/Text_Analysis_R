@@ -118,7 +118,6 @@ ggplot(word_counts, aes(x = word, y = n)) +
   # Title the plot "Non-Complaint Word Counts"
   ggtitle('Non-Complaint Word Counts')
 
-
 word_counts <- tidy_twitter %>%
   filter(complaint_label == "Non-complaint") %>%
   count(word) %>%
@@ -129,3 +128,24 @@ ggplot(word_counts, aes(x = word2, y = n)) +
   geom_col() +
   coord_flip() +
   ggtitle("Non-Complaint Word Counts")
+
+word_counts <- tidy_twitter %>%
+  # Count words by whether or not its a complaint
+  count(word, complaint_label) %>%
+  # Group by whether or not its a complaint
+  group_by(complaint_label) %>%
+  # Keep the top 20 words
+  slice_max(n, n = 20) %>%
+  # Ungroup before reordering word as a factor by the count
+  ungroup() %>%
+  mutate(word2 = fct_reorder(word, n))
+
+# Include a color aesthetic tied to whether or not its a complaint
+ggplot(word_counts, aes(x = word2, y = n, fill = complaint_label)) +
+  # Don't include the lengend for the column plot
+  geom_col(show.legend = FALSE) +
+  # Facet by whether or not its a complaint and make the y-axis free
+  facet_wrap(~ complaint_label, scales = "free_y") +
+  # Flip the coordinates and add a title: "Twitter Word Counts"
+  coord_flip() +
+  ggtitle("Twitter Word Counts")
