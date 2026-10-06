@@ -63,4 +63,30 @@ tweet_data %>%
   ) %>%
   arrange(desc(n_tweets))
 
+library(tidytext)
 
+tidy_twitter <- tweet_data %>%
+  # Tokenize the tweet text
+  unnest_tokens(word, text)
+
+tidy_twitter %>%
+  # Compute word counts
+  count(word) %>%
+  # Arrange the counts in descending order
+  arrange(desc(n))
+
+
+tidy_twitter <- tweet_data %>% 
+  # Tokenize the twitter data
+  unnest_tokens(word, text) %>% 
+  # Remove stop words
+  anti_join(stop_words)
+
+tidy_twitter %>% 
+  # Filter to keep complaints only
+  filter(complaint_label == "Complaint") %>% 
+  # Compute word counts and arrange in descending order
+  count(word) %>% 
+  arrange(desc(n))
+
+# It looks like complaints include frequent references to flight, cancelled, and service.
