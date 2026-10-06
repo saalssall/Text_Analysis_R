@@ -1,5 +1,9 @@
 # Load tidyverse and the tweets dataset
 library(tidyverse)
+# Load the wordcloud package
+library(wordcloud)
+# Load the tidytext package
+library(tidytext)
 tweet_data <- read_csv("Tweets.csv")
 glimpse(tweet_data)
 
@@ -62,8 +66,6 @@ tweet_data %>%
     n_tweets = n()
   ) %>%
   arrange(desc(n_tweets))
-
-library(tidytext)
 
 tidy_twitter <- tweet_data %>%
   # Tokenize the tweet text
@@ -149,3 +151,15 @@ ggplot(word_counts, aes(x = word2, y = n, fill = complaint_label)) +
   # Flip the coordinates and add a title: "Twitter Word Counts"
   coord_flip() +
   ggtitle("Twitter Word Counts")
+
+# Compute word counts and assign to word_counts
+word_counts <- tidy_twitter %>% 
+  count(word)
+
+wordcloud(
+  # Assign the word column to words
+  words = word_counts$word, 
+  # Assign the count column to freq
+  freq = word_counts$n, 
+  max.words = 30
+)
