@@ -239,3 +239,10 @@ ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
 # Pay is listed under both trust and positive. Remember, our sentiment analysis is conditioned on the dictionary we use. 
 # It's a tall order, but finding or building a sentiment dictionary that is context-specific would be ideal.
 
+tidy_twitter %>% 
+  # Append the NRC sentiment dictionary
+  inner_join(get_sentiments('nrc'), relationship = "many-to-many") %>% 
+  # Count by complaint label and sentiment
+  count(complaint_label, sentiment) %>% 
+  # Spread the sentiment and count columns
+  pivot_wider(names_from = sentiment, values_from = n)
