@@ -210,3 +210,32 @@ sentiment_twitter %>%
   count(sentiment) %>% 
   # Arrange the sentiment counts in descending order
   arrange(desc(n))
+
+word_counts <- tidy_twitter %>% 
+  # Append the NRC dictionary and filter for positive, fear, and trust
+  inner_join(get_sentiments("nrc")) %>% 
+  filter(sentiment %in% c("positive", "fear", "trust")) %>%
+  # Count by word and sentiment and take the top 10 of each
+  count(word, sentiment) %>% 
+  group_by(sentiment) %>% 
+  slice_max(n, n = 10) %>% 
+  ungroup() %>% 
+  # Create a factor called word2 that has each word ordered by the count
+  mutate(word2 = fct_reorder(word, n))
+
+# Create a bar plot out of the word counts colored by sentiment
+ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  # Create a separate facet for each sentiment with free axes
+  facet_wrap(~ sentiment, scales = "free") +
+  coord_flip() +
+  # Title the plot "Sentiment Word Counts" with "Words" for the x-axis
+  labs(
+    title = "Sentiment Word Counts",
+    x = "Words"
+  )
+
+# These word counts by sentiment illustrate a possible mismatch with this particular sentiment dictionary. For example, gate is listed under trust. 
+# Pay is listed under both trust and positive. Remember, our sentiment analysis is conditioned on the dictionary we use. 
+# It's a tall order, but finding or building a sentiment dictionary that is context-specific would be ideal.
+
