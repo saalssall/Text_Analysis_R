@@ -163,3 +163,16 @@ wordcloud(
   freq = word_counts$n, 
   max.words = 30
 )
+
+# Compute complaint word counts and assign to word_counts
+word_counts <- tidy_twitter %>% 
+  filter(complaint_label == "Complaint") %>% 
+  count(word)
+
+# Create a complaint word cloud of the top 50 terms, colored red
+wordcloud(
+  words = word_counts$word, 
+  freq = word_counts$n, 
+  max.words = 50, 
+  colors = "red"
+)
