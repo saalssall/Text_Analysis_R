@@ -176,3 +176,27 @@ wordcloud(
   max.words = 50, 
   colors = "red"
 )
+
+# 3. Sentiment Analysis
+
+# Count the number of words associated with each sentiment in nrc
+get_sentiments("nrc") %>% 
+  count(sentiment) %>% 
+  # Arrange the counts in descending order
+  arrange(desc(n))
+
+# Pull in the nrc dictionary, count the sentiments and reorder them by count
+sentiment_counts <- get_sentiments("nrc") %>% 
+  count(sentiment) %>% 
+  mutate(sentiment2 = fct_reorder(sentiment, n))
+
+# Visualize sentiment_counts using the new sentiment factor column
+ggplot(sentiment_counts, aes(x = sentiment2 , y = n)) +
+  geom_col() +
+  coord_flip() +
+  # Change the title to "Sentiment Counts in NRC", x-axis to "Sentiment", and y-axis to "Counts"
+  labs(
+    title = "Sentiment Counts in NRC",
+    x = "Sentiment",
+    y = "Counts"
+  )
