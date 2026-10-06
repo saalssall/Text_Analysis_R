@@ -1,13 +1,46 @@
 # Load tidyverse and the tweets dataset
 library(tidyverse)
 tweet_data <- read_csv("Tweets.csv")
-print(tweet_data)
+glimpse(tweet_data)
 
 # Build the complaint label (negative sentiment = complaint)
 tweet_data <- tweet_data %>%
   mutate(complaint_label = if_else(airline_sentiment == "negative",
                                    "Complaint", "Non-complaint"))
-# Summary of retweets by complaint status
+
+# Data cleaning
+
+# Drop columns with lots of NAs
+tweet_data <- tweet_data %>%
+  select(-airline_sentiment_gold, -negativereason_gold, -tweet_coord)
+
+# Negative reasons
+tweet_data <- tweet_data %>%
+  mutate(negativereason = replace_na(negativereason, "Not applicable"))
+
+# Replacing NAs in tweet location and user timezone
+tweet_data <- tweet_data %>%
+  mutate(
+    tweet_location = replace_na(tweet_location, "Unknown"),
+    user_timezone  = replace_na(user_timezone, "Unknown")
+  )
+
+# Impute NAs in negativereason_confidence
+tweet_data <- tweet_data %>%
+  mutate(negativereason_confidence =
+           replace_na(negativereason_confidence,
+                      median(negativereason_confidence, na.rm = TRUE)))
+
+# Total number of missing values in the each column
+colSums(is.na(tweet_data))
+
+#Number of missing locations
+sum(is.na(tweet_data$tweet_location))
+
+# How many complaints vs non-complaints
+tweet_data %>% count(complaint_label)
+
+# Retweets by complaint status
 tweet_data %>%
   group_by(complaint_label) %>%
   summarize(
@@ -15,4 +48,19 @@ tweet_data %>%
     min_retweets = min(retweet_count),
     max_retweets = max(retweet_count)
   )
+
+# Most common locations among complaints
+tweet_data %>%
+  filter(complaint_label == "Complaint", !is.na(tweet_location)) %>%
+  count(tweet_location, sort = TRUE)
+
+# Labelling confidence and tweet volume by airline
+tweet_data %>%
+  group_by(airline) %>%
+  summarize(
+    avg_confidence = mean(airline_sentiment_confidence),
+    n_tweets = n()
+  ) %>%
+  arrange(desc(n_tweets))
+
 
