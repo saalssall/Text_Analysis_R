@@ -117,3 +117,15 @@ ggplot(word_counts, aes(x = word, y = n)) +
   coord_flip() +
   # Title the plot "Non-Complaint Word Counts"
   ggtitle('Non-Complaint Word Counts')
+
+
+word_counts <- tidy_twitter %>%
+  filter(complaint_label == "Non-complaint") %>%
+  count(word) %>%
+  filter(n > 100) %>%
+  mutate(word2 = fct_reorder(word, n))
+
+ggplot(word_counts, aes(x = word2, y = n)) +
+  geom_col() +
+  coord_flip() +
+  ggtitle("Non-Complaint Word Counts")
