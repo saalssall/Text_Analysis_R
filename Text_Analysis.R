@@ -200,3 +200,13 @@ ggplot(sentiment_counts, aes(x = sentiment2 , y = n)) +
     x = "Sentiment",
     y = "Counts"
   )
+
+# Join tidy_twitter and the NRC sentiment dictionary
+sentiment_twitter <- tidy_twitter %>% 
+  inner_join(get_sentiments("nrc"))
+
+# Count the sentiments in sentiment_twitter
+sentiment_twitter %>% 
+  count(sentiment) %>% 
+  # Arrange the sentiment counts in descending order
+  arrange(desc(n))
