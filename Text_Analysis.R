@@ -8,7 +8,7 @@ tweet_data <- tweet_data %>%
   mutate(complaint_label = if_else(airline_sentiment == "negative",
                                    "Complaint", "Non-complaint"))
 
-# Data cleaning
+# 1. Data cleaning
 
 # Drop columns with lots of NAs
 tweet_data <- tweet_data %>%
@@ -90,3 +90,30 @@ tidy_twitter %>%
   arrange(desc(n))
 
 # It looks like complaints include frequent references to flight, cancelled, and service.
+
+# 2.Visualizing text
+
+word_counts <- tidy_twitter %>% 
+  filter(complaint_label == "Complaint") %>% 
+  count(word) %>% 
+  # Keep words with count greater than 100
+  filter(n > 500)
+
+# Create a bar plot using word_counts with x = word
+ggplot(word_counts, aes(x = word, y = n)) +
+  geom_col() +
+  # Flip the plot coordinates
+  coord_flip()
+
+word_counts <- tidy_twitter %>% 
+  # Only keep the non-complaints
+  filter(complaint_label != "Complaint") %>% 
+  count(word) %>% 
+  filter(n > 150)
+
+# Create a bar plot using the new word_counts
+ggplot(word_counts, aes(x = word, y = n)) +
+  geom_col() +
+  coord_flip() +
+  # Title the plot "Non-Complaint Word Counts"
+  ggtitle('Non-Complaint Word Counts')
