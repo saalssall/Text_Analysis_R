@@ -236,7 +236,7 @@ ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
   )
 
 # These word counts by sentiment illustrate a possible mismatch with this particular sentiment dictionary. For example, gate is listed under trust. 
-# Pay is listed under both trust and positive. Remember, our sentiment analysis is conditioned on the dictionary we use. 
+# Pay is listed under both trust and positive. Our sentiment analysis is conditioned on the dictionary we use. 
 # It's a tall order, but finding or building a sentiment dictionary that is context-specific would be ideal.
 
 tidy_twitter %>% 
@@ -246,3 +246,15 @@ tidy_twitter %>%
   count(complaint_label, sentiment) %>% 
   # Spread the sentiment and count columns
   pivot_wider(names_from = sentiment, values_from = n)
+
+tidy_twitter %>% 
+  # Append the afinn sentiment dictionary
+  inner_join(get_sentiments("afinn")) %>% 
+  # Group by both complaint label and airline
+  group_by(complaint_label, airline) %>% 
+  # Summarize the data with an aggregate_value = sum(value)
+  summarize(aggregate_value = sum(value)) %>% 
+  # Spread the complaint_label and aggregate_value columns
+  pivot_wider(names_from = complaint_label, values_from = aggregate_value) %>% 
+  mutate(overall_sentiment = Complaint + `Non-complaint`)
+
