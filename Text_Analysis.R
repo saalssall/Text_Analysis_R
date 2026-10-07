@@ -307,3 +307,21 @@ lda_topics %>%
     n = n()
   )
 
+word_probs <- lda_topics %>%
+  # Keep the top 10 highest word probabilities by topic
+  group_by(topic) %>% 
+  slice_max(beta, n = 10) %>% 
+  ungroup() %>%
+  # Create term2, a factor ordered by word probability
+  mutate(term2 = fct_reorder(term, beta))
+
+# Plot term2 and the word probabilities
+ggplot(word_probs, aes(x = term2, y = beta)) +
+  geom_col() +
+  # Facet the bar plot by topic
+  facet_wrap(~topic, scales = "free") +
+  coord_flip()
+
+
+
+
