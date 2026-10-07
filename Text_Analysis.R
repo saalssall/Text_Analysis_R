@@ -258,3 +258,27 @@ tidy_twitter %>%
   pivot_wider(names_from = complaint_label, values_from = aggregate_value) %>% 
   mutate(overall_sentiment = Complaint + `Non-complaint`)
 
+sentiment_twitter <- tidy_twitter %>% 
+  # Append the bing sentiment dictionary
+  inner_join(get_sentiments('bing')) %>% 
+  # Count by complaint label and sentiment
+  count(complaint_label, sentiment) %>% 
+  # Spread the sentiment and count columns
+  pivot_wider(names_from = sentiment, values_from = n) %>% 
+  # Compute overall_sentiment = positive - negative
+  mutate(overall_sentiment = positive - negative)
+
+# Create a bar plot out of overall sentiment by complaint label, colored by complaint label as a factor
+ggplot(
+  sentiment_twitter, 
+  aes(x = complaint_label, y = overall_sentiment, fill = as.factor(complaint_label))
+) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() + 
+  # Title the plot "Overall Sentiment by Complaint Label" with an "Airline Twitter Data" subtitle
+  labs(
+    title = "Overall Sentiment by Complaint Label",
+    subtitle = "Airline Twitter Data"
+  )
+
+# 4. Topic Modelling
