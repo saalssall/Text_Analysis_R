@@ -322,6 +322,25 @@ ggplot(word_probs, aes(x = term2, y = beta)) +
   facet_wrap(~topic, scales = "free") +
   coord_flip()
 
+# Start with the tidied Twitter data
+tidy_twitter %>% 
+  # Count each word used in each tweet
+  count(word, tweet_id) %>% 
+  # Use the word counts by tweet to create a DTM
+  cast_dtm(tweet_id, word, n)
 
+# A subset of the tidy_twitter data
+tidy_twitter_subset <- tidy_twitter %>%
+  filter(tweet_id %in% sample(unique(tweet_id), 500))
 
+# Assign the DTM to dtm_twitter
+dtm_twitter <- tidy_twitter_subset %>% 
+  count(word, tweet_id) %>% 
+  # Cast the word counts by tweet into a DTM
+  cast_dtm(tweet_id, word, n)
 
+# Coerce dtm_twitter into a matrix called matrix_twitter
+matrix_twitter <- as.matrix(dtm_twitter)
+
+# Print rows 1 through 5 and columns 90 through 95
+matrix_twitter[1:5, 90:95]
