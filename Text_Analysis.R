@@ -344,3 +344,30 @@ matrix_twitter <- as.matrix(dtm_twitter)
 
 # Print rows 1 through 5 and columns 90 through 95
 matrix_twitter[1:5, 90:95]
+
+# Cast the word counts by tweet into a DTM
+dtm_twitter <- tidy_twitter %>% 
+  count(word, tweet_id) %>% 
+  cast_dtm(tweet_id, word, n)
+
+# Run an LDA with 2 topics and a Gibbs sampler
+lda_out <- LDA(
+  dtm_twitter,
+  k = 2,
+  method = "Gibbs",
+  control = list(seed = 42)
+)
+
+# Glimpse the topic model output
+glimpse(lda_out)
+
+# Tidy the matrix of word probabilities
+lda_topics <- lda_out %>% 
+  tidy(matrix = "beta")
+
+# Arrange the topics by word probabilities in descending order
+lda_topics %>% 
+  arrange(desc(beta))
+
+
+
