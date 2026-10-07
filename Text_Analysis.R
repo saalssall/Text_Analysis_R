@@ -385,4 +385,19 @@ lda_topics2 <- lda_out2 %>%
 lda_topics2 %>% 
   arrange(desc(beta))
 
+# Select the top 15 terms by topic and reorder term
+word_probs2 <- lda_topics2 %>% 
+  group_by(topic) %>% 
+  slice_max(beta, n = 15) %>% 
+  ungroup() %>%
+  mutate(term2 = fct_reorder (term, beta))
+
+# Plot word_probs2, color and facet based on topic
+ggplot(
+  word_probs2, 
+  aes(term2, beta, fill = as.factor(topic))
+) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
 
