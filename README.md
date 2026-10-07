@@ -84,10 +84,3 @@ The script explores:
 - Some outputs are created as plots and can be stored in the `Figures/` directory.
 - Word and sentiment conclusions depend on the chosen sentiment dictionaries and may vary depending on the corpus.
 
-## License
-
-This project does not currently include a license file. If you plan to share or reuse it publicly, consider adding an open-source license such as MIT.
-
-## Author
-
-Created for text-analysis and sentiment-mining exploration in R.
