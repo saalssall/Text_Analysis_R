@@ -296,3 +296,14 @@ lda_topics
 lda_topics %>% 
   # Arrange the topics by word probabilities in descending order
   arrange(desc(beta))
+
+# Produce a grouped summary of the LDA output by topic
+lda_topics %>% 
+  group_by(topic) %>% 
+  summarize(
+    # Calculate the sum of the word probabilities
+    sum = sum(beta),
+    # Count the number of terms
+    n = n()
+  )
+
