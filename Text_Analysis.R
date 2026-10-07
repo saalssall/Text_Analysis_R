@@ -4,6 +4,9 @@ library(tidyverse)
 library(wordcloud)
 # Load the tidytext package
 library(tidytext)
+# Load the topic models package
+library(topicmodels)
+
 tweet_data <- read_csv("Tweets.csv")
 glimpse(tweet_data)
 
@@ -11,7 +14,6 @@ glimpse(tweet_data)
 tweet_data <- tweet_data %>%
   mutate(complaint_label = if_else(airline_sentiment == "negative",
                                    "Complaint", "Non-complaint"))
-
 # 1. Data cleaning
 
 # Drop columns with lots of NAs
@@ -282,3 +284,15 @@ ggplot(
   )
 
 # 4. Topic Modelling
+
+lda_topics <- tidy_twitter %>%
+  count(tweet_id, word) %>%
+  cast_dtm(tweet_id, word, n) %>%
+  LDA(k = 2, control = list(seed = 42)) %>%
+  tidy(matrix = "beta")
+
+lda_topics
+# Start with the topics output from the LDA run
+lda_topics %>% 
+  # Arrange the topics by word probabilities in descending order
+  arrange(desc(beta))
