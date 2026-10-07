@@ -351,7 +351,7 @@ dtm_twitter <- tidy_twitter %>%
   cast_dtm(tweet_id, word, n)
 
 # Run an LDA with 2 topics and a Gibbs sampler
-lda_out <- LDA(
+lda_out2 <- LDA(
   dtm_twitter,
   k = 2,
   method = "Gibbs",
@@ -359,23 +359,7 @@ lda_out <- LDA(
 )
 
 # Glimpse the topic model output
-glimpse(lda_out)
-
-# Tidy the matrix of word probabilities
-lda_topics <- lda_out %>% 
-  tidy(matrix = "beta")
-
-# Arrange the topics by word probabilities in descending order
-lda_topics %>% 
-  arrange(desc(beta))
-
-# Run an LDA with 3 topics and a Gibbs sampler
-lda_out2 <- LDA(
-  dtm_twitter,
-  k = 3,
-  method = "Gibbs",
-  control = list(seed = 42)
-)
+glimpse(lda_out2)
 
 # Tidy the matrix of word probabilities
 lda_topics2 <- lda_out2 %>% 
@@ -399,5 +383,36 @@ ggplot(
 ) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+
+# Run an LDA with 3 topics and a Gibbs sampler
+lda_out3 <- LDA(
+  dtm_twitter,
+  k = 3,
+  method = "Gibbs",
+  control = list(seed = 22)
+)
+
+# Tidy the matrix of word probabilities
+lda_topics3 <- lda_out3 %>% 
+  tidy(matrix = "beta")
+
+# Arrange the topics by word probabilities in descending order
+lda_topics3 %>% 
+  arrange(desc(beta))
+# Select the top 15 terms by topic and reorder term
+word_probs3 <- lda_topics3 %>% 
+  group_by(topic) %>% 
+  slice_max(beta, n = 15) %>% 
+  ungroup() %>%
+  mutate(term2 = fct_reorder(term, beta))
+
+# Plot word_probs3, color and facet based on topic
+ggplot(
+  word_probs3, 
+  aes(term2, beta, fill = as.factor(topic))
+) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
   coord_flip()
 
