@@ -369,5 +369,20 @@ lda_topics <- lda_out %>%
 lda_topics %>% 
   arrange(desc(beta))
 
+# Run an LDA with 3 topics and a Gibbs sampler
+lda_out2 <- LDA(
+  dtm_twitter,
+  k = 3,
+  method = "Gibbs",
+  control = list(seed = 42)
+)
+
+# Tidy the matrix of word probabilities
+lda_topics2 <- lda_out2 %>% 
+  tidy(matrix = "beta")
+
+# Arrange the topics by word probabilities in descending order
+lda_topics2 %>% 
+  arrange(desc(beta))
 
 
