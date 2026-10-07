@@ -5,5 +5,5 @@
 *.Rproj
 renv/library/
 data/
-
+Slides/
 .DS_Store
