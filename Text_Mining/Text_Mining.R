@@ -20,6 +20,25 @@ tweet_data <- read.csv("twitter_data.csv", stringsAsFactors = FALSE)
 str(tweet_data)
 
 # Isolate the text from the tweets
-coffee_tweets <- tweet_data$tweet_text
+tech_tweets <- tweet_data$tweet_text
 
-head(coffee_tweets)
+head(tech_tweets)
+
+# Load tm
+library(tm)
+
+# Make a vector source from tech_tweets
+tech_source <- VectorSource(tech_tweets)
+# Make a volatile corpus from tech_source
+tech_corpus <- VCorpus(tech_source)
+# Print out tech_corpus
+print(tech_corpus)
+# Print the 15th tweet in tech_corpus
+print(tech_corpus[[15]])
+# Print the contents of the 15th tweet in tech_corpus
+print(content(tech_corpus[[15]]))
+# Now use content to review the plain text of the 10th tweet
+print(content(tech_corpus[[10]]))
+
+
+
