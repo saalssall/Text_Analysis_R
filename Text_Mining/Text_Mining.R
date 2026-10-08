@@ -11,3 +11,15 @@ term_count <- freq_terms(text, 10)
 
 # Plot term_count
 plot(term_count)
+
+
+# Import text data from CSV, no factors
+tweet_data <- read.csv("twitter_data.csv", stringsAsFactors = FALSE)
+
+# View the structure of the data
+str(tweet_data)
+
+# Isolate the text from the tweets
+coffee_tweets <- tweet_data$tweet_text
+
+head(coffee_tweets)
