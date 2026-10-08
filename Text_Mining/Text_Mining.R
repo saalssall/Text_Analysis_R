@@ -40,5 +40,24 @@ print(content(tech_corpus[[15]]))
 # Now use content to review the plain text of the 10th tweet
 print(content(tech_corpus[[10]]))
 
+tweets_df <- data.frame(
+  doc_id = seq_len(nrow(tweet_data)),
+  text   = tweet_data$tweet_text,
+  stringsAsFactors = FALSE
+)
 
+# Corpus from the data frame
+df_source <- DataframeSource(tweets_df)
+df_corpus <- VCorpus(df_source)
 
+# Corpus from a plain vector of text
+vec_source <- VectorSource(tweet_data$tweet_text)
+vec_corpus <- VCorpus(vec_source)
+
+# Compare the number of documents
+df_corpus
+vec_corpus
+
+# Compare corpus-level metadata
+meta(df_corpus)
+meta(vec_corpus)
