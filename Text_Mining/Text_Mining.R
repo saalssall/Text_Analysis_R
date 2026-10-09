@@ -92,3 +92,14 @@ removeWords(text, stopwords("en"))
 new_stops <- c("coffee", "bean", stopwords("en"))
 # Remove stop words from text
 removeWords(text, new_stops)
+
+# Create complicate
+complicate <- c("complicated", "complication", "complicatedly")
+# Perform word stemming: stem_doc
+stem_doc <- stemDocument(complicate)
+# Create the completion dictionary: comp_dict
+comp_dict <- "complicate"
+# Perform stem completion: complete_text 
+complete_text <- stemCompletion(stem_doc, comp_dict)
+# Print complete_text
+complete_text
