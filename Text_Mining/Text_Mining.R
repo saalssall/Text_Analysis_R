@@ -61,3 +61,19 @@ vec_corpus
 # Compare corpus-level metadata
 meta(df_corpus)
 meta(vec_corpus)
+
+
+# Create the object: text
+text <- "<b>She</b> woke up at       6 A.M. It\'s so early!  She was only 10% awake and began drinking coffee in front of her computer."
+
+# Make lowercase
+tolower(text)
+
+# Remove punctuation
+removePunctuation(text)
+
+# Remove numbers
+removeNumbers(text)
+
+# Remove whitespace
+stripWhitespace(text)
