@@ -103,3 +103,25 @@ comp_dict <- "complicate"
 complete_text <- stemCompletion(stem_doc, comp_dict)
 # Print complete_text
 complete_text
+
+text_data <- "In a complicated haste, Tom rushed to fix a new complication, too complicatedly."
+# Dictionary of full words used to complete the stems
+comp_dict <- c("In", "a", "complicate", "haste", "Tom",
+               "rush", "to", "fix", "new", "too")
+
+word_stemming <- function(x) {
+  # Remove punctuation: rm_punc
+  rm_punc <- removePunctuation(x)
+  # Create character vector: n_char_vec
+  n_char_vec <- unlist(strsplit(rm_punc, split = " "))
+  # Perform word stemming: stem_doc
+  stem_doc <- stemDocument(n_char_vec)
+  # Re-complete stemmed document: complete_doc
+  complete_doc <- stemCompletion(stem_doc, comp_dict)
+  print(complete_doc)
+  
+}
+
+word_stemming(text_data)
+
+
