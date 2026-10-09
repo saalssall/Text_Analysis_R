@@ -124,4 +124,24 @@ word_stemming <- function(x) {
 
 word_stemming(text_data)
 
+clean_corpus <- function(corpus) {
+  # Lowercase first, so the stop word list (all lowercase) matches
+  corpus <- tm_map(corpus, content_transformer(tolower))
+  # Remove URLs before punctuation is stripped, or they turn into junk like "httpstcoabc"
+  corpus <- tm_map(corpus, content_transformer(function(x) gsub("http\\S+|www\\S+", "", x)))
+  # Remove stop words plus custom ones for this dataset
+  corpus <- tm_map(corpus, removeWords,
+                   words = c(stopwords("en"), "rt", "link", "mention", "sxsw"))
+  
+  corpus <- tm_map(corpus, removePunctuation)
+  corpus <- tm_map(corpus, stripWhitespace)
+  return(corpus)
+}
+
+# Apply the function to your corpus
+clean_corp <- clean_corpus(vec_corpus)
+# A cleaned tweet
+content(clean_corp[[220]])
+# The same tweet in its original form
+tweet_data$tweet_text[220]
 
