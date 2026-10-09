@@ -62,18 +62,33 @@ vec_corpus
 meta(df_corpus)
 meta(vec_corpus)
 
+clean_text <- function(x) {
+  # 1. Remove markup and bracketed text while the brackets still exist
+  x <- gsub("<[^>]+>", "", x)         # HTML tags, keeping the words between them
+  x <- bracketX(x)                    # (text in brackets) removed entirely
+  
+  # 2. Replace things that rely on punctuation, symbols or digits
+  x <- replace_abbreviation(x)        # needs periods: "Sr." -> "Senior"
+  x <- replace_contraction(x)         # needs apostrophes: "It's" -> "it is"
+  x <- replace_symbol(x)              # "%" -> "percent", "$" -> "dollar"
+  x <- replace_number(x)              # "6" -> "six", "10" -> "ten"
+  
+  # 3. Standardise what is left
+  x <- tolower(x)                     # after replacements, which may add capitals
+  x <- removePunctuation(x)           # remaining punctuation (!, commas, periods)
+  x <- stripWhitespace(x)             # last, so gaps left by earlier steps collapse
+  x
+}
 
-# Create the object: text
-text <- "<b>She</b> woke up at       6 A.M. It\'s so early!  She was only 10% awake and began drinking coffee in front of her computer."
+text <- "<b>She</b> woke up at       6 A.M. It\'s so early!  She was only 10% awake and began drinking coffee in front of her computer. But drinking too much coffee seems to be not good (bad) idea, Said Sr. Sofrware Engineer, Hamid (only in dreams lols!). Drinking too much coffee cost too much $"
 
-# Make lowercase
-tolower(text)
+clean_text(text)
 
-# Remove punctuation
-removePunctuation(text)
-
-# Remove numbers
-removeNumbers(text)
-
-# Remove whitespace
-stripWhitespace(text)
+# List standard English stop words
+stopwords("en")
+# Print text without standard stop words
+removeWords(text, stopwords("en"))
+# Add "coffee" and "bean" to the list: new_stops
+new_stops <- c("coffee", "bean", stopwords("en"))
+# Remove stop words from text
+removeWords(text, new_stops)
