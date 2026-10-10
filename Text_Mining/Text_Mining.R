@@ -147,3 +147,14 @@ tweet_m <- as.matrix(tweet_dtm)
 dim(tweet_m)
 # Review a portion of the matrix to get some Starbucks
 tweet_m[25:35, c("ipad", "google")]
+
+# Create a term-document matrix from the corpus
+tweet_tdm <- TermDocumentMatrix(clean_corp)
+# Print tweet_tdm data
+tweet_tdm
+# Convert tweet_tdm to a matrix
+tweet_m <- as.matrix(tweet_tdm)
+# Print the dimensions of the matrix
+dim(tweet_m)
+# Review a portion of the matrix
+tweet_m[c("ipad", "google"), 25:35]
