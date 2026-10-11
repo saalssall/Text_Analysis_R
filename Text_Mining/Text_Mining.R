@@ -198,3 +198,15 @@ term_frequency[1:10]
 terms_vec <- names(term_frequency)
 # Create a word cloud for the values in word_freqs
 wordcloud(terms_vec, term_frequency, max.words = 50, colors = "red")
+
+# Word frequencies: total count of each term across all tweets
+word_freqs <- rowSums(as.matrix(tweet_tdm))      # tweet_tdm is a TDM (terms = rows)
+# Sort in descending order
+sorted_words <- sort(word_freqs, decreasing = TRUE)
+# Print the 6 most frequent terms
+head(sorted_words, 6)
+# Get a terms vector
+terms_vec <- names(sorted_words)
+# Create a word cloud
+wordcloud(terms_vec, sorted_words,
+          max.words = 50, colors = "red")
