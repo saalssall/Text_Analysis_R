@@ -217,7 +217,14 @@ term_frequency <- data.frame(term = names(word_freqs),
                              num  = word_freqs)
 
 # Word cloud with the specified colours
-set.seed(42)
 wordcloud(term_frequency$term, term_frequency$num,
           max.words = 100,
           colors = c("grey80", "darkgoldenrod1", "tomato"))
+
+library(viridisLite)
+# Select 5 colors 
+color_pal <- cividis(5)
+# Examine the palette output
+color_pal
+# Create a word cloud with the selected palette
+wordcloud(term_frequency$term, term_frequency$num, max.words = 100, colors = color_pal)
