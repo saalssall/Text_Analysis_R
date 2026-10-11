@@ -2,6 +2,8 @@
 library(qdap)
 # Load tm
 library(tm)
+# Load wordcloud package
+library(wordcloud)
 
 text <- "Text mining, text data mining (TDM) or text analytics is the process of deriving high-quality information from text. It involves 'the discovery by computer of new, previously unknown information, by automatically extracting information from different written resources.'[1] Written resources may include websites, books, emails, reviews, and articles.[2] High-quality information is typically obtained by devising patterns and trends by means such as statistical pattern learning. According to Hotho et al. (2005), there are three perspectives of text mining: information extraction, data mining, and knowledge discovery in databases (KDD).[3] Text mining usually involves the process of structuring the input text (usually parsing, along with the addition of some derived linguistic features and the removal of others, and subsequent insertion into a database), deriving patterns within the structured data, and finally evaluation and interpretation of the output. 'High quality' in text mining usually refers to some combination of relevance, novelty, and interest. Typical text mining tasks include text categorization, text clustering, concept/entity extraction, production of granular taxonomies, sentiment analysis, document summarization, and entity relation modeling (i.e., learning relations between named entities)."
 # Print new_text to the console
@@ -189,3 +191,10 @@ frequency <- freq_terms(
 )
 # Make a frequency bar chart
 plot(frequency)
+
+# Print the first 10 entries in term_frequency
+term_frequency[1:10]
+# Vector of terms
+terms_vec <- names(term_frequency)
+# Create a word cloud for the values in word_freqs
+wordcloud(terms_vec, term_frequency, max.words = 50, colors = "red")
