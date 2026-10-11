@@ -210,3 +210,14 @@ terms_vec <- names(sorted_words)
 # Create a word cloud
 wordcloud(terms_vec, sorted_words,
           max.words = 50, colors = "red")
+
+
+# Data frame with one row per term
+term_frequency <- data.frame(term = names(word_freqs),
+                             num  = word_freqs)
+
+# Word cloud with the specified colours
+set.seed(42)
+wordcloud(term_frequency$term, term_frequency$num,
+          max.words = 100,
+          colors = c("grey80", "darkgoldenrod1", "tomato"))
