@@ -158,3 +158,14 @@ tweet_m <- as.matrix(tweet_tdm)
 dim(tweet_m)
 # Review a portion of the matrix
 tweet_m[c("ipad", "google"), 25:35]
+
+# Convert tweet_tdm to a matrix
+tweet_m <- as.matrix(tweet_tdm)
+# Calculate the row sums of tweet_m
+term_frequency <- rowSums(tweet_m)
+# Sort term_frequency in decreasing order
+term_frequency <- sort(term_frequency, decreasing = TRUE)
+# View the top 10 most common words
+term_frequency[1:10]
+# Plot a barchart of the 10 most common words
+barplot(term_frequency[1:10], col = "tan", las = 2)
