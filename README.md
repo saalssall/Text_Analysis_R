@@ -1,86 +1,86 @@
-# Text Analysis in R
+# Text Mining in R
 
-A small R project for analyzing airline-related Twitter data using text mining, sentiment analysis, and topic modeling.
+This repository contains a pair of R-based text analysis projects focused on Twitter and social-media text mining. The scripts demonstrate common workflows for preprocessing text, extracting word frequencies, creating word clouds, and exploring sentiment and topic patterns.
 
-This project reads a CSV of tweets, cleans and transforms the text, identifies complaint vs. non-complaint tweets, explores common words, and applies sentiment and topic-modeling techniques to uncover patterns in customer feedback.
-
-## Project Highlights
-
-- Text cleaning and preprocessing for tweet data
-- Complaint classification using sentiment labels
-- Word frequency analysis and word clouds
-- Sentiment analysis with `tidytext` dictionaries (`nrc`, `afinn`, `bing`)
-- Topic modeling using Latent Dirichlet Allocation (LDA)
-- Visualization of common words and sentiment trends
-
-## Repository Structure
+## Repository structure
 
 ```text
-Text_Analysis_R/
-├── Text_Analysis.R     # Main analysis script
-├── Tweets.csv          # Airline sentiment tweet dataset
-├── Figures/            # Output folder for generated plots
-├── .gitignore
-└── README.md           # Project documentation
+Text_Mining_R/
+├── LICENSE
+├── README.md
+├── Text_Analysis/
+│   ├── Text_Analysis.R
+│   ├── Tweets.csv
+│   └── Text_Analysis_Figures/
+├── Text_Mining/
+│   ├── Text_Mining.R
+│   ├── twitter_data.csv
+│   └── Text_Mining_Figures/
+└── .gitignore
 ```
 
-## Data
+## Project folders
 
-The project uses a tweet dataset stored in `Tweets.csv`, containing airline-related social media posts and associated metadata such as:
+### Text_Analysis
 
-- airline name
-- tweet text
-- sentiment labels
-- tweet location and timezone
-- retweet counts
-- complaint indicators
+The `Text_Analysis` folder contains a larger airline tweet analysis workflow. It explores:
 
-## Requirements
+- loading tweet data from CSV
+- text cleaning and preprocessing
+- complaint vs. non-complaint classification
+- word frequency analysis
+- sentiment analysis using lexicons such as `nrc`, `afinn`, and `bing`
+- topic modeling with LDA
+- plot generation for finding patterns in airline-related social posts
 
-This project requires R and the following packages:
-
-```r
-install.packages(c(
-  "tidyverse",
-  "wordcloud",
-  "tidytext",
-  "topicmodels"
-))
-```
-
-## Running the Analysis
-
-1. Open R or RStudio.
-2. Set the working directory to the project folder.
-3. Run the script:
+Run it from the repository root with:
 
 ```r
+setwd("Text_Analysis")
 source("Text_Analysis.R")
 ```
 
-The script will:
+### Text_Mining
 
-- load the tweet data
-- clean and prepare the dataset
-- compute complaint labels
-- generate word frequency summaries
-- create visualizations
-- perform sentiment analysis
-- run LDA topic models
+The `Text_Mining` folder contains a focused text-mining tutorial using the `tm` and `qdap` packages. It covers:
 
-## Example Analyses Included
+- corpus creation from vectors and data frames
+- text cleaning, stop-word removal, and stemming
+- term-document and document-term matrices
+- term frequency summaries
+- word clouds and color palette examples
+- visual exploration of frequent terms in tweets
 
-The script explores:
+Run it from the repository root with:
 
-- complaint vs. non-complaint tweet volumes
-- most common words among complaint tweets
-- sentiment frequencies using NRC and Bing lexicons
-- airline-level sentiment trends
-- LDA topic extraction for tweet themes
+```r
+setwd("Text_Mining")
+source("Text_Mining.R")
+```
+
+## Requirements
+
+This project uses R and the following packages:
+
+```r
+install.packages(c(
+  "tm",
+  "qdap",
+  "wordcloud",
+  "RColorBrewer",
+  "tidyverse",
+  "tidytext",
+  "topicmodels",
+  "viridisLite"
+))
+```
 
 ## Notes
 
-- The project is intended for learning and exploratory data analysis in R.
-- Some outputs are created as plots and can be stored in the `Figures/` directory.
-- Word and sentiment conclusions depend on the chosen sentiment dictionaries and may vary depending on the corpus.
+- The scripts are educational and exploratory in nature.
+- Generated plots and figure outputs are saved in the corresponding `*_Figures` folders.
+- The exact results may vary depending on package versions, text preprocessing decisions, and the dataset used.
 
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
