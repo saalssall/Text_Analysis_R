@@ -169,3 +169,23 @@ term_frequency <- sort(term_frequency, decreasing = TRUE)
 term_frequency[1:10]
 # Plot a barchart of the 10 most common words
 barplot(term_frequency[1:10], col = "tan", las = 2)
+
+# Create frequency using freq_terms from qdap
+frequency <- freq_terms(
+  tweet_data$tweet_text,
+  top = 10,
+  at.least = 3,
+  stopwords = Top200Words
+)
+
+plot(frequency)
+
+# Create frequency
+frequency <- freq_terms(
+  tweet_data$tweet_text,
+  top = 10,
+  at.least = 3,
+  stopwords = stopwords("english")
+)
+# Make a frequency bar chart
+plot(frequency)
